@@ -135,7 +135,21 @@ strong {
 	text-align: right;
 }
 
+table {text-align: left; margin-left: 3rem; margin-top:4rem; font-size: 1.5rem;}
+tr {height: 3rem;}
+td.request, th.request {width: 30%; padding-left: 15px;}
+label {max-width: 80%;}
+tr.input:hover {background-color: #ccc;}
+
+span.instructions {color: #fff; font-size: 1.2rem;}
+
+#noteReason{color:#EE677B; }
+tr.complete { background-color: #ddd;}
+
+td.viewReq, th.viewReq {max-width: 100px;}
+#purchaseRequestList {font-size: 1rem;}
+
 /* Override JQuery UI's oversize widgets */
 .ui-widget {
-	font-size: inherit !important;
+	/* font-size: inherit !important;*/
 }
