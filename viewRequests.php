@@ -48,6 +48,14 @@
 <?php
 
 	while ($row = mysqli_fetch_assoc($result)) {
+
+		// parse_url() only sets scheme if it finds one,
+		// so it should be a good indicator of URL-ness
+		$parseurl = parse_url($row['isbn']);
+		if (isset($parseurl['scheme'])) {
+			$row['isbn'] = '<a href="'.$row['isbn'].'">'.$row['isbn'].'</a>';
+		}
+
 		echo '<tr>
 			<td class="viewReq">'.$row['requester'].'</td>
 			<td class="viewReq">'.$row['Librarian'].'</td>
