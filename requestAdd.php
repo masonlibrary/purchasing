@@ -6,14 +6,14 @@
         $todaysDate = date("Y/m/d");
         
        $query="insert into purchase_request ".
-               "(mlprlibrID, mlprTitle, mlprAuthor, mlprISBN, mlpradptID, mlprRush, mlprNotes, mlprDate) ".
-               "VALUES (?,?,?,?,?,?,?,?)";
+               "(mlprlibrID, mlprTitle, mlprAuthor, mlprISBN, mlpradptID, mlprRush, mlprNotes, mlprDate, mlprRequester) ".
+               "VALUES (?,?,?,?,?,?,?,?,?)";
        
       
        $stmt = mysqli_prepare($dbc, $query);
        
   
-       $stmt->bind_param("isssisss",
+       $stmt->bind_param("isssisssi",
 				$_POST['librarian'],
 				$_POST['itemTitle'],
 				$_POST['authorEditor'],
@@ -21,7 +21,8 @@
 				$_POST['academicDept'],
 				$_POST['rush'],
 				$_POST['notes'],
-                                $todaysDate);
+				$todaysDate,
+				$_POST['requester']);
  
        
        

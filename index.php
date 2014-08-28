@@ -11,11 +11,9 @@
 			<th class="request requester"><label for="requester">Requester</label></th>
 			<td class="request requester">
 				<select id="requester" name="requester">
-					<option value="" selected="selected"></option>
 					<?php
-						$result = mysqli_query($dbc, 'select rqstID, rqstName from requesters') or die('Error retrieving requesters:' . mysqli_error($dbc));
+						$result = mysqli_query($dbc, 'select rqstID, rqstName from requesters order by rqstID') or die('Error retrieving requesters:' . mysqli_error($dbc));
 						while ($row = mysqli_fetch_assoc($result)) {
-							echo $row['rqstID'] . $row['rqstName'];
 							echo '<option value='.$row['rqstID'].'>'.$row['rqstName'].'</option>';
 						}
 						mysqli_free_result($result);
