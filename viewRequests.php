@@ -20,7 +20,8 @@
                 'p.mlprISBN as isbn, '.
                 'p.mlprRush as rush, '.
                 'p.mlprNotes as notes, '.
-                'p.mlprDate as Date '.
+                'p.mlprDate as Date, '.
+                'p.mlprStatus as action '.
                 'from purchase_request p, librarians l, academic_department a, requesters r '.
 								'where l.librID=p.mlprlibrID and a.adptID=p.mlpradptID and r.rqstID=p.mlprRequester';
         
@@ -41,6 +42,7 @@
 					<th class="viewReq">Rush</th>
 					<th class="viewReq">Notes</th>
 					<th class="viewReq">Date</th>
+					<th class="viewReq">Action</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -66,12 +68,27 @@
 			<td class="viewReq rush">'.$row['rush'].'</td>
 			<td class="viewReq">'.$row['notes'].'</td>
 			<td class="viewReq date">'.toUSDate($row['Date']).'</td>
-				
+			<td class="viewReq">
+				<select id="'.$row['ID'].'" class="actions">
+					<option '.($row['action']=='' ? 'selected' : '').' value=""></option>
+					<option '.($row['action']=='a' ? 'selected' : '').' value="a">Approved</option>
+					<option '.($row['action']=='d' ? 'selected' : '').' value="d">Declined</option>
+					<option '.($row['action']=='m' ? 'selected' : '').' value="m">Maybe</option>
+				</select>
+			</td>
 			</tr>';
 	}
 	echo '</tbody></table>';
 
-	$jsOutput .= '$("#class").spinner();';
+	$jsOutput .= '
+			$(".actions").change(function(){
+
+				console.log("Setting "+$(this).attr("id")+" to \""+$(this).val()+"\"...");
+				var req = $.post("actionAjax.php", { id:$(this).attr("id"), action:$(this).val() });
+				req.always(function(data){ console.log(data); });
+
+			});
+		';
 	//$jsOutput .= '$(document).ready( function(){$("#purchaseRequestList").dataTable();} );';
 
 	require_once 'includes/footer.php';
