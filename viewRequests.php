@@ -6,7 +6,7 @@
 
 
 	$page_title = 'View Collection Purchase Requests';
-	require_once 'includes/header.php';
+	require_once 'includes/headerNoMenu.php';
 
 
 
@@ -55,7 +55,7 @@
 		// so it should be a good indicator of URL-ness
 		$parseurl = parse_url($row['isbn']);
 		if (isset($parseurl['scheme'])) {
-			$row['isbn'] = '<a href="'.$row['isbn'].'">'.$row['isbn'].'</a>';
+			$row['isbn'] = '<a href="'.$row['isbn'].'">Link</a>';
 		}
 
 		echo '<tr>
