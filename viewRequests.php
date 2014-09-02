@@ -55,7 +55,7 @@
 		// so it should be a good indicator of URL-ness
 		$parseurl = parse_url($row['isbn']);
 		if (isset($parseurl['scheme'])) {
-			$row['isbn'] = '<a href="'.$row['isbn'].'">Link</a>';
+			$row['isbn'] = '<a href="'.$row['isbn'].'" target="_blank">Link</a>';
 		}
 
 		echo '<tr>
