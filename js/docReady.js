@@ -214,18 +214,49 @@
                     }
             
 	});
-  
-               var oTable = $('#purchaseRequestList').dataTable({
+
+		var oTable = $('#purchaseRequestList').dataTable({
 			"sDom": 'T<"clear">lfrtip',
 			"bStateSave": true,
 			"bLengthChange": false,
 			"bPaginate": false,
 			"oTableTools": { "sSwfPath":"copy_csv_xls_pdf.swf" }
-		}).rowGrouping({
+		/*}).rowGrouping({
 			bExpandableGrouping: true /*,
 			asExpandedGroups: []        */
 		});
-  
-  
-  
+
+		$('#dialog').dialog({
+			 modal: true,
+			 width: 700,
+//			 height: 500,
+			 autoOpen: false,
+			 open: function(event, ui) {
+				 // Allow closing by clicking outside dialog
+				 $('.ui-widget-overlay').click(function(){ $('#dialog').dialog('close'); });
+			 }
+		});
+
+		$('#purchaseRequestList tbody tr').click(function(){
+			var data = oTable.fnGetData( this );
+			console.log(this);
+			console.log(data);
+
+			var str = "<table>";
+			str += "<tr><th>Requester</th><td>"+data[0];
+			str += "<tr><th>Librarian</th><td>"+data[1];
+			str += "<tr><th>Department</th><td>"+data[2];
+			str += "<tr><th>Title</th><td>"+data[3];
+			str += "<tr><th>Author</th><td>"+data[4];
+			str += "<tr><th>ISBN</th><td>"+data[5];
+			str += "<tr><th>Rush?</th><td>"+data[6];
+			str += "<tr><th>Notes</th><td>"+data[7];
+			str += "<tr><th>Date</th><td>"+data[8];
+			str += "<tr><th>Action</th><td>"+data[9];
+			str += "</table>";
+
+			$('#dialog').html(str);
+			$('#dialog').dialog('open');
+		});
+
 });

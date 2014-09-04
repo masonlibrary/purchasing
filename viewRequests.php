@@ -30,6 +30,8 @@
 
 ?>
 
+<div id="dialog">Dialog.</div>
+
 		<table id="purchaseRequestList">
 			<thead>
 				<tr>
