@@ -247,24 +247,33 @@ function rowdialog(i) {
 	// Array operator to get DOM node, not jQuery object
 	var oTable = $('#purchaseRequestList').dataTable();
 	var data = oTable.fnGetData( $("tr[rowid='"+i+"']")[0] );
-	var prev = $("tr[rowid='"+i+"']").prev().attr('rowid');
-	var next = $("tr[rowid='"+i+"']").next().attr('rowid');
+	var prev = $('tr[rowid="'+i+'"]').prev().attr('rowid');
+	var next = $('tr[rowid="'+i+'"]').next().attr('rowid');
 
-	var str = "<table>";
-	str += "<tr><th>Requester</th><td>"+data[0]+"</td></tr>";
-	str += "<tr><th>Librarian</th><td>"+data[1]+"</td></tr>";
-	str += "<tr><th>Department</th><td>"+data[2]+"</td></tr>";
-	str += "<tr><th>Title</th><td>"+data[3]+"</td></tr>";
-	str += "<tr><th>Author</th><td>"+data[4]+"</td></tr>";
-	str += "<tr><th>ISBN</th><td>"+data[5]+"</td></tr>";
-	str += "<tr><th>Rush?</th><td>"+data[6]+"</td></tr>";
-	str += "<tr><th>Notes</th><td>"+data[7]+"</td></tr>";
-	str += "<tr><th>Date</th><td>"+data[8]+"</td></tr>";
-	str += "<tr><th>Action</th><td>"+data[9]+"</td></tr>";
-	str += "</table>";
-	if(prev) { str += '<a href="javascript:rowdialog('+prev+')">previous</a>'; }
-	if(next) { str += '<a href="javascript:rowdialog('+next+')">next</a>'; }
-
+	var str = '';
+	if (prev) {
+		str += '<a class="navdiv left vcenter" onclick="rowdialog('+prev+')">&lt;</a>';
+	} else {
+		str += '<a class="navdiv left vcenter"></a>';
+	}
+	if (next) {
+		str += '<a class="navdiv right vcenter" onclick="rowdialog('+next+')">&gt;</a>';
+	} else {
+		str += '<a class="navdiv right vcenter"></a>';
+	}
+	str += '<table>';
+	str += '<tr><th>Requester</th><td>'+data[0]+'</td></tr>';
+	str += '<tr><th>Librarian</th><td>'+data[1]+'</td></tr>';
+	str += '<tr><th>Department</th><td>'+data[2]+'</td></tr>';
+	str += '<tr><th>Title</th><td>'+data[3]+'</td></tr>';
+	str += '<tr><th>Author</th><td>'+data[4]+'</td></tr>';
+	str += '<tr><th>ISBN</th><td>'+data[5]+'</td></tr>';
+	str += '<tr><th>Rush?</th><td>'+data[6]+'</td></tr>';
+	str += '<tr><th>Notes</th><td>'+data[7]+'</td></tr>';
+	str += '<tr><th>Date</th><td>'+data[8]+'</td></tr>';
+	str += '<tr><th>Action</th><td>'+data[9]+'</td></tr>';
+	str += '</table>';
+	
 	$('#dialog').html(str);
 	$('#dialog').dialog('open');
 }
