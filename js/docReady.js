@@ -238,25 +238,33 @@
 		});
 
 		$('#purchaseRequestList tbody tr').click(function(){
-			var data = oTable.fnGetData( this );
-			console.log(this);
-			console.log(data);
-
-			var str = "<table>";
-			str += "<tr><th>Requester</th><td>"+data[0];
-			str += "<tr><th>Librarian</th><td>"+data[1];
-			str += "<tr><th>Department</th><td>"+data[2];
-			str += "<tr><th>Title</th><td>"+data[3];
-			str += "<tr><th>Author</th><td>"+data[4];
-			str += "<tr><th>ISBN</th><td>"+data[5];
-			str += "<tr><th>Rush?</th><td>"+data[6];
-			str += "<tr><th>Notes</th><td>"+data[7];
-			str += "<tr><th>Date</th><td>"+data[8];
-			str += "<tr><th>Action</th><td>"+data[9];
-			str += "</table>";
-
-			$('#dialog').html(str);
-			$('#dialog').dialog('open');
+			rowdialog($(this).attr('rowid'));
 		});
 
 });
+
+function rowdialog(i) {
+	// Array operator to get DOM node, not jQuery object
+	var oTable = $('#purchaseRequestList').dataTable();
+	var data = oTable.fnGetData( $("tr[rowid='"+i+"']")[0] );
+	var prev = $("tr[rowid='"+i+"']").prev().attr('rowid');
+	var next = $("tr[rowid='"+i+"']").next().attr('rowid');
+
+	var str = "<table>";
+	str += "<tr><th>Requester</th><td>"+data[0]+"</td></tr>";
+	str += "<tr><th>Librarian</th><td>"+data[1]+"</td></tr>";
+	str += "<tr><th>Department</th><td>"+data[2]+"</td></tr>";
+	str += "<tr><th>Title</th><td>"+data[3]+"</td></tr>";
+	str += "<tr><th>Author</th><td>"+data[4]+"</td></tr>";
+	str += "<tr><th>ISBN</th><td>"+data[5]+"</td></tr>";
+	str += "<tr><th>Rush?</th><td>"+data[6]+"</td></tr>";
+	str += "<tr><th>Notes</th><td>"+data[7]+"</td></tr>";
+	str += "<tr><th>Date</th><td>"+data[8]+"</td></tr>";
+	str += "<tr><th>Action</th><td>"+data[9]+"</td></tr>";
+	str += "</table>";
+	if(prev) { str += '<a href="javascript:rowdialog('+prev+')">previous</a>'; }
+	if(next) { str += '<a href="javascript:rowdialog('+next+')">next</a>'; }
+
+	$('#dialog').html(str);
+	$('#dialog').dialog('open');
+}

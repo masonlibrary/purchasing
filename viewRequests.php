@@ -51,6 +51,7 @@
 
 <?php
 
+	$i=0;
 	while ($row = mysqli_fetch_assoc($result)) {
 
 		// parse_url() only sets scheme if it finds one,
@@ -60,7 +61,7 @@
 			$row['isbn'] = '<a href="'.$row['isbn'].'" target="_blank">Link</a>';
 		}
 
-		echo '<tr>
+		echo '<tr rowid="'.$i++.'">
 			<td class="viewReq">'.$row['requester'].'</td>
 			<td class="viewReq">'.$row['Librarian'].'</td>
 			<td class="viewReq">'.$row['Department'].'</td>
