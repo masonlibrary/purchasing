@@ -215,16 +215,7 @@
             
 	});
 
-		var oTable = $('#purchaseRequestList').dataTable({
-			"sDom": 'T<"clear">lfrtip',
-			"bStateSave": true,
-			"bLengthChange": false,
-			"bPaginate": false,
-			"oTableTools": { "sSwfPath":"copy_csv_xls_pdf.swf" }
-		/*}).rowGrouping({
-			bExpandableGrouping: true /*,
-			asExpandedGroups: []        */
-		});
+		initTable('#purchaseRequestList');
 
 		$('#dialog').dialog({
 			 modal: true,
@@ -237,11 +228,27 @@
 			 }
 		});
 
-		$('#purchaseRequestList tbody tr').click(function(){
+		$('#purchaseRequestList tbody tr').click(function(e){
+			// Don't pop up dialog if we're a link
+			// Credit: http://stackoverflow.com/a/3550649/217374
+	    if($(e.target).is('a')) return;
 			rowdialog($(this).attr('rowid'));
 		});
 
 });
+
+function initTable(selector) {
+		var oTable = $(selector).dataTable({
+			"sDom": 'T<"clear">lfrtip',
+			"bAutoWidth": false,
+			"bDestroy": true,
+			"bStateSave": true,
+			"bLengthChange": false,
+			"bPaginate": false,
+			"oTableTools": { "sSwfPath":"copy_csv_xls_pdf.swf" }
+		});
+		return oTable;
+}
 
 function rowdialog(i) {
 	// Array operator to get DOM node, not jQuery object
@@ -271,9 +278,38 @@ function rowdialog(i) {
 	str += '<tr><th>Rush?</th><td>'+data[6]+'</td></tr>';
 	str += '<tr><th>Notes</th><td>'+data[7]+'</td></tr>';
 	str += '<tr><th>Date</th><td>'+data[8]+'</td></tr>';
-	str += '<tr><th>Action</th><td>'+data[9]+'</td></tr>';
+	str += '<tr><th>Action</th><td>';
+		str += '<select class="actions" id='+i+'>';
+			str += '<option '+(data[9]==='' ? 'selected' : '')+' value=""></option>';
+			str += '<option '+(data[9]==='Approved' ? 'selected' : '')+' value="a">Approved</option>';
+			str += '<option '+(data[9]==='Declined' ? 'selected' : '')+' value="d">Declined</option>';
+			str += '<option '+(data[9]==='Maybe' ? 'selected' : '')+' value="m">Maybe</option>';
+		str += '</select>';
+	str += '</td></tr>';
+	str += '<tr><th></th><td id="result">&nbsp;</td>';
 	str += '</table>';
-	
+
 	$('#dialog').html(str);
+	$(".actions").change(function(){
+
+		var id = $(this).attr("id");
+		var action = $(this).val();
+		console.log("Setting "+id+" to \""+action+"\"...");
+		var req = $.post("actionAjax.php", { id:id, action:action });
+		req.done(function(){
+			$("tr[rowid='"+id+"'] .action").html($('.actions').find(":selected").text());
+			initTable('#purchaseRequestList');
+			$('#result').css('color', 'green');
+			$('#result').text('Saved.');
+			$('#result').animate({color:"white"}, 2000);
+		});
+		req.fail(function(){
+			$('#result').css('color', 'red');
+			$('#result').text('Error saving change');
+			$('#result').animate({color:"white"}, 2000);
+		});
+		req.always(function(data){ console.log(data); });
+
+	});
 	$('#dialog').dialog('open');
 }

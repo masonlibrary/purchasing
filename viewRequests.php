@@ -51,7 +51,6 @@
 
 <?php
 
-	$i=0;
 	while ($row = mysqli_fetch_assoc($result)) {
 
 		// parse_url() only sets scheme if it finds one,
@@ -61,7 +60,23 @@
 			$row['isbn'] = '<a href="'.$row['isbn'].'" target="_blank">Link</a>';
 		}
 
-		echo '<tr rowid="'.$i++.'">
+		$action = '';
+		switch ($row['action']) {
+			case 'a':
+				$action = 'Approved';
+				break;
+			case 'd':
+				$action = 'Declined';
+				break;
+			case 'm':
+				$action = 'Maybe';
+				break;
+			default:
+				$action = '';
+				break;
+		}
+
+		echo '<tr rowid="'.$row['ID'].'">
 			<td class="viewReq">'.$row['requester'].'</td>
 			<td class="viewReq">'.$row['Librarian'].'</td>
 			<td class="viewReq">'.$row['Department'].'</td>
@@ -71,28 +86,10 @@
 			<td class="viewReq rush">'.$row['rush'].'</td>
 			<td class="viewReq">'.$row['notes'].'</td>
 			<td class="viewReq date">'.toUSDate($row['Date']).'</td>
-			<td class="viewReq">
-				<select id="'.$row['ID'].'" class="actions">
-					<option '.($row['action']=='' ? 'selected' : '').' value=""></option>
-					<option '.($row['action']=='a' ? 'selected' : '').' value="a">Approved</option>
-					<option '.($row['action']=='d' ? 'selected' : '').' value="d">Declined</option>
-					<option '.($row['action']=='m' ? 'selected' : '').' value="m">Maybe</option>
-				</select>
-			</td>
+			<td class="viewReq action">'.$action.'</td>
 			</tr>';
 	}
 	echo '</tbody></table>';
-
-	$jsOutput .= '
-			$(".actions").change(function(){
-
-				console.log("Setting "+$(this).attr("id")+" to \""+$(this).val()+"\"...");
-				var req = $.post("actionAjax.php", { id:$(this).attr("id"), action:$(this).val() });
-				req.always(function(data){ console.log(data); });
-
-			});
-		';
-	//$jsOutput .= '$(document).ready( function(){$("#purchaseRequestList").dataTable();} );';
 
 	require_once 'includes/footer.php';
 
