@@ -21,15 +21,21 @@
 				break;
 		}
 
-		// @TODO: Throw exception
-		$stmt = mysqli_prepare($dbc, 'update purchase_request set mlprStatus=? where mlprID=?');
-		mysqli_stmt_bind_param($stmt, 'si', $action, $_POST['id']);
-		if(!mysqli_stmt_execute($stmt)) {
-			header('HTTP/1.0 500 Internal Server Error');
-			echo 'Failed to execute query: ' . mysqli_error($dbc);
-		} else {
+		try {
+
+			$stmt = mysqli_prepare($dbc, 'update purchase_request set mlprStatus=? where mlprID=?');
+			if (!$stmt) { throw new Exception(''); }
+			if(!mysqli_stmt_bind_param($stmt, 'si', $action, $_POST['id'])) { throw new Exception(''); }
+			if(!mysqli_stmt_execute($stmt)) { throw new Exception(''); }
+
 			header('HTTP/1.0 200 OK');
 			echo 'Set '.$_POST['id'].' to "'.$action.'".';
+
+		} catch (Exception $e) {
+
+			header('HTTP/1.0 500 Internal Server Error');
+			echo 'Failed to execute query: ' . mysqli_error($dbc);
+
 		}
 	}
 ?>
