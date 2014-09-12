@@ -164,8 +164,13 @@ span.instructions {color: #fff; font-size: 1.2rem;}
 #noteReason{color:#EE677B; }
 tr.complete { background-color: #ddd;}
 
-td.viewReq, th.viewReq {max-width: 100px;}
+/*td.viewReq, th.viewReq {max-width: 100px;}*/
 /*#purchaseRequestList {font-size: 1rem;}*/
+
+.dataTable tbody tr:hover * {
+	background-color: #c8c0ff !important;
+	cursor: pointer;
+}
 
 /* Override JQuery UI's oversize widgets */
 .ui-widget {
