@@ -239,12 +239,13 @@
 
 function initTable(selector) {
 		var oTable = $(selector).dataTable({
+			"aaSorting": [[8, 'desc']],
 			"sDom": 'T<"clear">lfrtip',
 			"bAutoWidth": false,
 			"bDestroy": true,
 			"bStateSave": true,
-			"bLengthChange": false,
-			"bPaginate": false,
+			"bLengthChange": true,
+			"bPaginate": true,
 			"oTableTools": { "sSwfPath":"copy_csv_xls_pdf.swf" }
 		});
 		return oTable;
