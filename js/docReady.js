@@ -296,6 +296,9 @@ function rowdialog(i) {
 		var action = $(this).val();
 		console.log("Setting "+id+" to \""+action+"\"...");
 		var req = $.post("actionAjax.php", { id:id, action:action });
+		$('#result').stop({clearQueue:true});
+		$('#result').css('color', 'blue');
+		$('#result').text('Saving...');
 		req.done(function(){
 			$("tr[rowid='"+id+"'] .action").html($('.actions').find(":selected").text());
 			initTable('#purchaseRequestList');
