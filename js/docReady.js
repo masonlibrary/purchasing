@@ -215,7 +215,7 @@
             
 	});
 
-		initTable('#purchaseRequestList');
+		var oTable = initTable('#purchaseRequestList');
 
 		$('#dialog').dialog({
 			 modal: true,
@@ -228,18 +228,20 @@
 			 }
 		});
 
-		$('#purchaseRequestList tbody tr').click(function(e){
-			// Don't pop up dialog if we're a link
-			// Credit: http://stackoverflow.com/a/3550649/217374
-	    if($(e.target).is('a')) return;
-			rowdialog($(this).attr('rowid'));
+		oTable.on('draw', function() {
+			$('#purchaseRequestList tbody tr').click(function(e){
+				// Don't pop up dialog if we're a link
+				// Credit: http://stackoverflow.com/a/3550649/217374
+				if($(e.target).is('a')) return;
+				rowdialog($(this).attr('rowid'));
+			});
 		});
-
 });
 
 function initTable(selector) {
 		var oTable = $(selector).dataTable({
 			"aaSorting": [[8, 'desc']],
+			"aoColumns": [null, null, null, null, null, null, null, null, {"sType": "date"}, null],
 			"sDom": 'T<"clear">lfrtip',
 			"bAutoWidth": false,
 			"bDestroy": true,

@@ -4,7 +4,7 @@
         require_once 'includes/connection.php';
 ?>
 
-<form method="post" action="requestAdd.php">
+<form class="container" method="post" action="requestAdd.php">
 	<table id="request">
 
 		<tr class="input requester">

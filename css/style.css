@@ -124,6 +124,11 @@ strong {
 	line-height: 1.0;
 }
 
+.container {
+	width: 80%;
+	margin: 0 auto;
+}
+
 .left {
 	float: left;
 	margin-right: 5px;
