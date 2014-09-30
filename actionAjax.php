@@ -23,13 +23,13 @@
 
 		try {
 
-			$stmt = mysqli_prepare($dbc, 'update purchase_request set mlprStatus=? where mlprID=?');
+			$stmt = mysqli_prepare($dbc, 'update purchase_request set mlprStatus=?, mlprReason=? where mlprID=?');
 			if (!$stmt) { throw new Exception(''); }
-			if(!mysqli_stmt_bind_param($stmt, 'si', $action, $_POST['id'])) { throw new Exception(''); }
+			if(!mysqli_stmt_bind_param($stmt, 'ssi', $action, $_POST['reason'], $_POST['id'])) { throw new Exception(''); }
 			if(!mysqli_stmt_execute($stmt)) { throw new Exception(''); }
 
 			header('HTTP/1.0 200 OK');
-			echo 'Set '.$_POST['id'].' to "'.$action.'".';
+			echo 'Set '.$_POST['id'].' to "'.$action.'", reason to "'.$_POST['reason'].'".';
 
 		} catch (Exception $e) {
 

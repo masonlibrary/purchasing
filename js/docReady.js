@@ -233,7 +233,7 @@
 function initTable(selector) {
 		var oTable = $(selector).dataTable({
 			"aaSorting": [[8, 'desc']],
-			"aoColumns": [null, null, null, null, null, null, null, null, {"sType": "date"}, null],
+			"aoColumns": [null, null, null, null, null, null, null, null, {"sType": "date"}, null, {bVisible: false}],
 			"sDom": 'T<"clear">lfrtip',
 			"bAutoWidth": false,
 			"bDestroy": true,
@@ -244,19 +244,23 @@ function initTable(selector) {
 		});
 
 		// draw event isn't fired on table creation, so we have to do this twice
-		$('#purchaseRequestList tbody tr').click(function(e){ rowdialog(e, $(this).attr('rowid')); });
+		$('#purchaseRequestList tbody tr').click(function(e){
+			// Don't pop up dialog if we're a link
+			// Credit: http://stackoverflow.com/a/3550649/217374
+			if($(e.target).is('a')) return;
+			rowdialog($(this).attr('rowid'));
+		});
 		oTable.on('draw', function() {
-			$('#purchaseRequestList tbody tr').click(function(e){ rowdialog(e, $(this).attr('rowid')); });
+			$('#purchaseRequestList tbody tr').click(function(e){
+				if($(e.target).is('a')) return;
+				rowdialog($(this).attr('rowid'));
+			});
 		});
 
 		return oTable;
 }
 
-function rowdialog(e, i) {
-	// Don't pop up dialog if we're a link
-	// Credit: http://stackoverflow.com/a/3550649/217374
-	if($(e.target).is('a')) return;
-
+function rowdialog(i) {
 	// Array operator to get DOM node, not jQuery object
 	var oTable = $('#purchaseRequestList').dataTable();
 	var data = oTable.fnGetData( $("tr[rowid='"+i+"']")[0] );
@@ -285,23 +289,26 @@ function rowdialog(e, i) {
 	str += '<tr><th>Notes</th><td>'+data[7]+'</td></tr>';
 	str += '<tr><th>Date</th><td>'+data[8]+'</td></tr>';
 	str += '<tr><th>Action</th><td>';
-		str += '<select class="actions" id='+i+'>';
+		str += '<select class="actions" id="action">';
 			str += '<option '+(data[9]==='' ? 'selected' : '')+' value=""></option>';
 			str += '<option '+(data[9]==='Approved' ? 'selected' : '')+' value="a">Approved</option>';
 			str += '<option '+(data[9]==='Declined' ? 'selected' : '')+' value="d">Declined</option>';
 			str += '<option '+(data[9]==='Maybe' ? 'selected' : '')+' value="m">Maybe</option>';
 		str += '</select>';
 	str += '</td></tr>';
+	str += '<tr><th>Reason</th><td><input type="text" id="reason" maxlength="300" value="'+data[10]+'"></input>';
+	str += '<tr><th></th><td><input type="hidden" id="rowid" value="'+i+'"></input><input type="submit" id="submit" value="Save"></input>';
 	str += '<tr><th></th><td id="result">&nbsp;</td>';
 	str += '</table>';
 
 	$('#dialog').html(str);
-	$(".actions").change(function(){
+	$("#submit").click(function(){
 
-		var id = $(this).attr("id");
-		var action = $(this).val();
-		console.log("Setting "+id+" to \""+action+"\"...");
-		var req = $.post("actionAjax.php", { id:id, action:action });
+		var id = $('#rowid').val();
+		var action = $('#action').val();
+		var reason = $('#reason').val();
+		console.log('Setting '+id+' to "'+action+'", reason to "'+reason+'"...');
+		var req = $.post("actionAjax.php", { id:id, action:action, reason:reason });
 		$('#result').stop({clearQueue:true});
 		$('#result').css('color', 'blue');
 		$('#result').text('Saving...');

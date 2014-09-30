@@ -21,7 +21,8 @@
                 'p.mlprRush as rush, '.
                 'p.mlprNotes as notes, '.
                 'p.mlprDate as Date, '.
-                'p.mlprStatus as action '.
+                'p.mlprStatus as action, '.
+                'p.mlprReason as reason '.
                 'from purchase_request p, librarians l, academic_department a, requesters r '.
 								'where l.librID=p.mlprlibrID and a.adptID=p.mlpradptID and r.rqstID=p.mlprRequester';
         
@@ -45,6 +46,7 @@
 					<th class="viewReq">Notes</th>
 					<th class="viewReq">Date</th>
 					<th class="viewReq">Action</th>
+					<th class="viewReq">Reason</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -87,6 +89,7 @@
 			<td class="viewReq">'.$row['notes'].'</td>
 			<td class="viewReq date">'.toUSDate($row['Date']).'</td>
 			<td class="viewReq action">'.$action.'</td>
+			<td class="viewReq">'.$row['reason'].'</td>
 			</tr>';
 	}
 	echo '</tbody></table>';
