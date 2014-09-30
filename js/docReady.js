@@ -215,7 +215,7 @@
             
 	});
 
-		var oTable = initTable('#purchaseRequestList');
+		initTable('#purchaseRequestList');
 
 		$('#dialog').dialog({
 			 modal: true,
@@ -228,14 +228,6 @@
 			 }
 		});
 
-		oTable.on('draw', function() {
-			$('#purchaseRequestList tbody tr').click(function(e){
-				// Don't pop up dialog if we're a link
-				// Credit: http://stackoverflow.com/a/3550649/217374
-				if($(e.target).is('a')) return;
-				rowdialog($(this).attr('rowid'));
-			});
-		});
 });
 
 function initTable(selector) {
@@ -250,10 +242,21 @@ function initTable(selector) {
 			"bPaginate": true,
 			"oTableTools": { "sSwfPath":"copy_csv_xls_pdf.swf" }
 		});
+
+		// draw event isn't fired on table creation, so we have to do this twice
+		$('#purchaseRequestList tbody tr').click(function(e){ rowdialog(e, $(this).attr('rowid')); });
+		oTable.on('draw', function() {
+			$('#purchaseRequestList tbody tr').click(function(e){ rowdialog(e, $(this).attr('rowid')); });
+		});
+
 		return oTable;
 }
 
-function rowdialog(i) {
+function rowdialog(e, i) {
+	// Don't pop up dialog if we're a link
+	// Credit: http://stackoverflow.com/a/3550649/217374
+	if($(e.target).is('a')) return;
+
 	// Array operator to get DOM node, not jQuery object
 	var oTable = $('#purchaseRequestList').dataTable();
 	var data = oTable.fnGetData( $("tr[rowid='"+i+"']")[0] );
