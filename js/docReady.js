@@ -233,7 +233,7 @@
 function initTable(selector) {
 		var oTable = $(selector).dataTable({
 			"aaSorting": [[8, 'desc']],
-			"aoColumns": [null, null, null, null, null, null, null, null, {"sType": "date"}, null, {bVisible: false}],
+			"aoColumns": [{bVisible: false}, null, null, null, null, null, null, null, {"sType": "date"}, null, null],
 			"sDom": 'T<"clear">lfrtip',
 			"bAutoWidth": false,
 			"bDestroy": true,
