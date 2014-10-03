@@ -3,7 +3,7 @@
 	$site_base_url = '/purchasing/';
 	$site_title = 'Purchasing';
 	$site_uses_auth = false;
-	$site_collapsible_menu = true;
+	$site_collapsible_menu = false;
 	$site_copyright = 2014;
 	// If copyright date is not this year, make a range
 	if ($site_copyright != date('Y')) { $site_copyright .= '-' . date('Y'); }

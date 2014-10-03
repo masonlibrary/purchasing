@@ -53,37 +53,17 @@
 			?>
 				<div>
 					<ul>
-						<li><strong>test</strong></li>
-						<li><a href="#">test</a></li>
-						<li><a href="#">test</a></li>
+						<li><a href="index.php">Add requests</a></li>
 					</ul>
 				</div>
 				<div>
 					<ul>
-						<li>test2</li>
-						<li>test2</li>
-						<li>test2</li>
+						<li><a href="viewRequests.php">View requests</a></li>
 					</ul>
 				</div>
 				<div>
 					<ul>
-						<li>test3</li>
-						<li>test3</li>
-						<li>test3</li>
-					</ul>
-				</div>
-				<div>
-					<ul>
-						<li>test4</li>
-						<li>test4</li>
-						<li>test4</li>
-					</ul>
-				</div>
-				<div>
-					<ul>
-						<li><strong>Admin</strong></li>
-						<li><a href="userAdmin.php">Manage users</a></li>
-						<li>test5</li>
+						<a href="requestArchive.php"><li>Archive requests</li></a>
 					</ul>
 				</div>
 			</div> <!-- menu -->

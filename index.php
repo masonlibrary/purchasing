@@ -1,6 +1,6 @@
 <?php
 	$page_title = 'Collection Purchase Request';
-	require_once 'includes/headerNoMenu.php';
+	require_once 'includes/header.php';
         require_once 'includes/connection.php';
 ?>
 

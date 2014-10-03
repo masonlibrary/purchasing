@@ -1,7 +1,7 @@
 <?php
 
 	$page_title = 'Archive Requests';
-	require_once 'includes/headerNoMenu.php';
+	require_once 'includes/header.php';
 	require_once 'includes/connection.php';
 
 	if ($_POST) {

@@ -4,11 +4,8 @@
 	require_once 'includes/connection.php';
         require_once 'includes/dateFunctions.php';
 
-
 	$page_title = 'View Collection Purchase Requests';
-	require_once 'includes/headerNoMenu.php';
-
-
+	require_once 'includes/header.php';
 
 	$query = 'select '.
                 'p.mlprID as ID, '.
