@@ -24,7 +24,8 @@
                 'p.mlprStatus as action, '.
                 'p.mlprReason as reason '.
                 'from purchase_request p, librarians l, academic_department a, requesters r '.
-								'where l.librID=p.mlprlibrID and a.adptID=p.mlpradptID and r.rqstID=p.mlprRequester';
+								'where l.librID=p.mlprlibrID and a.adptID=p.mlpradptID and r.rqstID=p.mlprRequester and p.mlprArchived="n" ' .
+								'order by mlprID desc';
         
         
 	$result = mysqli_query($dbc, $query) or die('Error querying for users: ' . mysqli_error($dbc));
@@ -59,7 +60,7 @@
 		// so it should be a good indicator of URL-ness
 		$parseurl = parse_url($row['isbn']);
 		if (isset($parseurl['scheme'])) {
-			$row['isbn'] = '<a href="'.$row['isbn'].'" target="_blank">Link</a>';
+			$row['isbn'] = '<a href="'.$row['isbn'].'" target="_blank">'.$row['isbn'].'</a>';
 		}
 
 		$action = '';
@@ -84,7 +85,7 @@
 			<td class="viewReq">'.$row['Department'].'</td>
 			<td class="viewReq">'.$row['Title'].'</td>
 			<td class="viewReq">'.$row['Author'].'</td>
-			<td class="viewReq">'.$row['isbn'].'</td>
+			<td class="viewReq isbn">'.$row['isbn'].'</td>
 			<td class="viewReq rush">'.$row['rush'].'</td>
 			<td class="viewReq">'.$row['notes'].'</td>
 			<td class="viewReq date">'.toUSDate($row['Date']).'</td>

@@ -177,6 +177,10 @@ tr.complete { background-color: #ddd;}
 	cursor: pointer;
 }
 
+.isbn {
+	max-width: 100px;
+}
+
 /* Override JQuery UI's oversize widgets */
 .ui-widget {
 	/* font-size: inherit !important;*/
