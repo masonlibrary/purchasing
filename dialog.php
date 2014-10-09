@@ -30,6 +30,11 @@
 		$row['author'], $row['isbn'], $row['rush'], $row['notes'], $row['date'], $row['action'], $row['reason']);
 	mysqli_stmt_fetch($stmt);
 
+	$parseurl = parse_url($row['isbn']);
+	if (isset($parseurl['scheme'])) {
+		$row['isbn'] = '<a href="'.$row['isbn'].'" target="_blank">'.$row['isbn'].'</a>';
+	}
+
 	echo '<table>
 		<tr><th>Requester</th><td>'.$row['requester'].'</td></tr>
 		<tr><th>Librarian</th><td>'.$row['librarian'].'</td></tr>
@@ -45,7 +50,7 @@
 		</td></tr>
 		<tr><th>Title</th><td>'.$row['title'].'</td></tr>
 		<tr><th>Author</th><td>'.$row['author'].'</td></tr>
-		<tr><th>ISBN</th><td>'.$row['isbn'].'</td></tr>
+		<tr><th>ISBN</th><td style="word-break:break-all;">'.$row['isbn'].'</td></tr>
 		<tr><th>Rush?</th><td>'.$row['rush'].'</td></tr>
 		<tr><th>Notes</th><td>'.$row['notes'].'</td></tr>
 		<tr><th>Date</th><td>'.$row['date'].'</td></tr>

@@ -34,7 +34,7 @@ h1 { font-size: 1.5em; }
 h2 { font-size: 1.125em; }
 h3 { font-size: 1em; }
 
-a {
+a, .ui-widget-content a {
 	cursor: pointer;
 	text-decoration: none;
 	color: #479;
