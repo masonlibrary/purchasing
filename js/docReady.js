@@ -220,9 +220,9 @@
 		$('#dialog').dialog({
 			 modal: true,
 			 width: 700,
-//			 height: 500,
+			 height: 425,
 			 autoOpen: false,
-			 open: function(event, ui) {
+			 open: function() {
 				 // Allow closing by clicking outside dialog
 				 $('.ui-widget-overlay').click(function(){ $('#dialog').dialog('close'); });
 			 }
@@ -261,13 +261,12 @@ function initTable(selector) {
 }
 
 function rowdialog(i) {
-	// Array operator to get DOM node, not jQuery object
-	var oTable = $('#purchaseRequestList').dataTable();
-	var data = oTable.fnGetData( $("tr[rowid='"+i+"']")[0] );
+	$('#dialog').html('Loading...');
+
 	var prev = $('tr[rowid="'+i+'"]').prev().attr('rowid');
 	var next = $('tr[rowid="'+i+'"]').next().attr('rowid');
-
 	var str = '';
+
 	if (prev) {
 		str += '<a class="navdiv left vcenter" onclick="rowdialog('+prev+')">&lt;</a>';
 	} else {
@@ -278,54 +277,40 @@ function rowdialog(i) {
 	} else {
 		str += '<a class="navdiv right vcenter"></a>';
 	}
-	str += '<table>';
-	str += '<tr><th>Requester</th><td>'+data[0]+'</td></tr>';
-	str += '<tr><th>Librarian</th><td>'+data[1]+'</td></tr>';
-	str += '<tr><th>Department</th><td>'+data[2]+'</td></tr>';
-	str += '<tr><th>Title</th><td>'+data[3]+'</td></tr>';
-	str += '<tr><th>Author</th><td>'+data[4]+'</td></tr>';
-	str += '<tr><th>ISBN</th><td>'+data[5]+'</td></tr>';
-	str += '<tr><th>Rush?</th><td>'+data[6]+'</td></tr>';
-	str += '<tr><th>Notes</th><td>'+data[7]+'</td></tr>';
-	str += '<tr><th>Date</th><td>'+data[8]+'</td></tr>';
-	str += '<tr><th>Action</th><td>';
-		str += '<select class="actions" id="action">';
-			str += '<option '+(data[9]==='' ? 'selected' : '')+' value=""></option>';
-			str += '<option '+(data[9]==='Approved' ? 'selected' : '')+' value="a">Approved</option>';
-			str += '<option '+(data[9]==='Declined' ? 'selected' : '')+' value="d">Declined</option>';
-			str += '<option '+(data[9]==='Maybe' ? 'selected' : '')+' value="m">Maybe</option>';
-		str += '</select>';
-	str += '</td></tr>';
-	str += '<tr><th>Reason</th><td><input type="text" id="reason" maxlength="300" value="'+data[10]+'"></input>';
-	str += '<tr><th></th><td><input type="hidden" id="rowid" value="'+i+'"></input><input type="submit" id="submit" value="Save"></input>';
-	str += '<tr><th></th><td id="result">&nbsp;</td>';
-	str += '</table>';
 
-	$('#dialog').html(str);
-	$("#submit").click(function(){
-
-		var id = $('#rowid').val();
-		var action = $('#action').val();
-		var reason = $('#reason').val();
-		console.log('Setting '+id+' to "'+action+'", reason to "'+reason+'"...');
-		var req = $.post("actionAjax.php", { id:id, action:action, reason:reason });
-		$('#result').stop({clearQueue:true});
-		$('#result').css('color', 'blue');
-		$('#result').text('Saving...');
-		req.done(function(){
-			$("tr[rowid='"+id+"'] .action").html($('.actions').find(":selected").text());
-			initTable('#purchaseRequestList');
-			$('#result').css('color', 'green');
-			$('#result').text('Saved.');
-			$('#result').animate({color:"white"}, 2000);
-		});
-		req.fail(function(){
-			$('#result').css('color', 'red');
-			$('#result').text('Error saving change');
-			$('#result').animate({color:"white"}, 2000);
-		});
-		req.always(function(data){ console.log(data); });
-
+	var get = $.get('dialog.php?id='+i);
+	get.done(function(data) {
+		str += data;
 	});
-	$('#dialog').dialog('open');
+	get.fail(function() {
+		str += 'Failed to load dialog contents from the database! <a onclick="rowdialog('+i+')>Retry</a>';
+	});
+	get.always(function() {
+		$('#dialog').html(str);
+		$('#dialog').dialog('open');
+		$('#submit').click(function(){
+			var id = $('#rowid').val();
+			var dept = $('#dept').val();
+			var action = $('#action').val();
+			var reason = $('#reason').val();
+			var req = $.post('actionAjax.php', { id:id, dept:dept, action:action, reason:reason });
+			$('#result').stop({clearQueue:true});
+			$('#result').css('color', 'blue');
+			$('#result').text('Saving...');
+			req.done(function(){
+				$('tr[rowid="'+id+'"] .action').html($('#action').find(':selected').text());
+				$('tr[rowid="'+id+'"] .dept').html($('#dept').find(':selected').text());
+				$('tr[rowid="'+id+'"] .reason').html($('#reason').val());
+				initTable('#purchaseRequestList');
+				$('#result').css('color', 'green');
+				$('#result').text('Saved.');
+				$('#result').animate({color:"white"}, 2000);
+			});
+			req.fail(function(){
+				$('#result').css('color', 'red');
+				$('#result').text('Error saving change');
+				$('#result').animate({color:"white"}, 2000);
+			});
+		});
+	});
 }

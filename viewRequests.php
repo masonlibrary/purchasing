@@ -79,7 +79,7 @@
 		echo '<tr rowid="'.$row['ID'].'">
 			<td class="viewReq">'.$row['requester'].'</td>
 			<td class="viewReq">'.$row['Librarian'].'</td>
-			<td class="viewReq">'.$row['Department'].'</td>
+			<td class="viewReq dept">'.$row['Department'].'</td>
 			<td class="viewReq">'.$row['Title'].'</td>
 			<td class="viewReq">'.$row['Author'].'</td>
 			<td class="viewReq isbn">'.$row['isbn'].'</td>
@@ -87,7 +87,7 @@
 			<td class="viewReq">'.$row['notes'].'</td>
 			<td class="viewReq date">'.toUSDate($row['Date']).'</td>
 			<td class="viewReq action">'.$action.'</td>
-			<td class="viewReq">'.$row['reason'].'</td>
+			<td class="viewReq reason">'.$row['reason'].'</td>
 			</tr>';
 	}
 	echo '</tbody></table>';

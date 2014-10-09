@@ -3,9 +3,8 @@
 	require_once 'includes/connection.php';
 
 	if ($_POST) {
-//var_dump($_POST);
-		$action = '';
 
+		$action = '';
 		switch ($_POST['action']) {
 			case 'a':
 				$action = 'a';
@@ -23,9 +22,9 @@
 
 		try {
 
-			$stmt = mysqli_prepare($dbc, 'update purchase_request set mlprStatus=?, mlprReason=? where mlprID=?');
+			$stmt = mysqli_prepare($dbc, 'update purchase_request set mlprStatus=?, mlprReason=?, mlpradptID=? where mlprID=?');
 			if (!$stmt) { throw new Exception(''); }
-			if(!mysqli_stmt_bind_param($stmt, 'ssi', $action, $_POST['reason'], $_POST['id'])) { throw new Exception(''); }
+			if(!mysqli_stmt_bind_param($stmt, 'ssii', $action, $_POST['reason'], $_POST['dept'], $_POST['id'])) { throw new Exception(''); }
 			if(!mysqli_stmt_execute($stmt)) { throw new Exception(''); }
 
 			header('HTTP/1.0 200 OK');
